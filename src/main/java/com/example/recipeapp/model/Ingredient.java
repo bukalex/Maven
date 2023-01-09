@@ -3,6 +3,7 @@ package com.example.recipeapp.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+@Data
 @AllArgsConstructor
 public class Ingredient {
     public static int ID = 0;
@@ -16,8 +17,8 @@ public class Ingredient {
 
     @Override
     public String toString() {
-        return "name: " + name + "<br>" +
-                "amount: " + amount + "<br>" +
+        return "name: " + name + "\n" +
+                "amount: " + amount + "\n" +
                 "units: " + units;
     }
 }
