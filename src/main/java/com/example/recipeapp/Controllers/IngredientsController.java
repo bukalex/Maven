@@ -1,6 +1,8 @@
 package com.example.recipeapp.Controllers;
 
 import com.example.recipeapp.model.Ingredient;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,8 +12,10 @@ import static com.example.recipeapp.Controllers.RecipesController.recipesService
 
 @RestController
 @RequestMapping("/recipes/{recipeID}/ingredients")
+@Tag(name = "Ингредиенты", description = "CRUD-операции для работы с ингредиентами")
 public class IngredientsController {
-    @GetMapping("/get_ingredient/{id}")
+    @GetMapping("/{id}")
+    @Operation(summary = "Поиск ингредиента по идентификатору")
     public String getIngredient(@PathVariable int recipeID, @PathVariable int id){
         if(recipesService.getRecipe(recipeID) == null || recipesService.getIngredient(recipeID, id) == null){
             return "Ничего не найдено!";
@@ -19,7 +23,8 @@ public class IngredientsController {
         return recipesService.getIngredient(recipeID, id).toString();
     }
 
-    @GetMapping("/get_all_ingredients")
+    @GetMapping()
+    @Operation(summary = "Поиск всех ингредиентов")
     public String getAllIngredients(@PathVariable int recipeID){
         String allIngredients = new String();
         for(Map.Entry<Integer, Ingredient> ingredient : recipesService.getRecipe(recipeID).getIngredients().entrySet()){
@@ -29,7 +34,8 @@ public class IngredientsController {
         return allIngredients;
     }
 
-    @PostMapping("/add_ingredient")
+    @PostMapping()
+    @Operation(summary = "Добавление нового ингредиента")
     public ResponseEntity<Ingredient> addIngredient(@PathVariable int recipeID, @RequestBody Ingredient newIngredient){
         if(recipesService.getRecipe(recipeID) == null || newIngredient == null){
             return ResponseEntity.notFound().build();
@@ -38,7 +44,8 @@ public class IngredientsController {
         return ResponseEntity.ok().body(newIngredient);
     }
 
-    @PutMapping("/edit_ingredient/{id}")
+    @PutMapping("/{id}")
+    @Operation(summary = "Редактирование ингредиента по идентификатору")
     public ResponseEntity<Ingredient> addRecipe(@PathVariable int recipeID, @PathVariable int id, @RequestBody Ingredient editedIngredient){
         if(recipesService.getRecipe(recipeID) == null || editedIngredient == null || recipesService.getIngredient(recipeID, id) == null){
             return ResponseEntity.notFound().build();
@@ -47,7 +54,8 @@ public class IngredientsController {
         return ResponseEntity.ok().body(editedIngredient);
     }
 
-    @DeleteMapping("/delete_ingredient/{id}")
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Удаление ингредиента по идентификатору")
     public ResponseEntity<Ingredient> deleteRecipe(@PathVariable int recipeID, @PathVariable int id){
         if(recipesService.getRecipe(recipeID) == null || recipesService.getIngredient(recipeID, id) == null){
             return ResponseEntity.notFound().build();

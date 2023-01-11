@@ -2,6 +2,8 @@ package com.example.recipeapp.Controllers;
 
 import com.example.recipeapp.model.Recipe;
 import com.example.recipeapp.services.impl.RecipesServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,10 +11,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/recipes")
+@Tag(name = "Рецепты", description = "CRUD-операции для работы с рецептами")
 public class RecipesController {
     public static RecipesServiceImpl recipesService = new RecipesServiceImpl();
 
-    @GetMapping("/get_recipe/{id}")
+    @GetMapping("/{id}")
+    @Operation(summary = "Поиск рецепта по идентификатору")
     public String getRecipe(@PathVariable int id){
         if(recipesService.getRecipe(id) == null){
             return "Ничего не найдено!";
@@ -20,7 +24,8 @@ public class RecipesController {
         return recipesService.getRecipe(id).toString();
     }
 
-    @GetMapping("/get_all_recipes")
+    @GetMapping()
+    @Operation(summary = "Поиск всех рецептов")
     public String getAllRecipes(){
         String allRecipes = new String();
         for(Map.Entry<Integer, Recipe> recipe : recipesService.getRecipeMap().entrySet()){
@@ -30,7 +35,8 @@ public class RecipesController {
         return allRecipes;
     }
 
-    @PostMapping("/add_recipe")
+    @PostMapping("")
+    @Operation(summary = "Добавление нового рецепта")
     public ResponseEntity<Recipe> addRecipe(@RequestBody Recipe newRecipe){
         if(newRecipe == null){
             return ResponseEntity.notFound().build();
@@ -39,7 +45,8 @@ public class RecipesController {
         return ResponseEntity.ok().body(newRecipe);
     }
 
-    @PutMapping("/edit_recipe/{id}")
+    @PutMapping("/{id}")
+    @Operation(summary = "Редактирование рецепта по идентификатору")
     public ResponseEntity<Recipe> editRecipe(@PathVariable int id, @RequestBody Recipe editedRecipe){
         if(editedRecipe == null || recipesService.getRecipe(id) == null){
             return ResponseEntity.notFound().build();
@@ -48,7 +55,8 @@ public class RecipesController {
         return ResponseEntity.ok().body(editedRecipe);
     }
 
-    @DeleteMapping("/delete_recipe/{id}")
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Удаление рецепта по идентификатору")
     public ResponseEntity<Recipe> deleteRecipe(@PathVariable int id){
         if(recipesService.getRecipe(id) == null){
             return ResponseEntity.notFound().build();
