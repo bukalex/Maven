@@ -1,6 +1,8 @@
 package com.example.recipeapp.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
@@ -8,11 +10,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class Recipe {
     public static int ID = 0;
     private String title;
-    private double time;
+    private int time;
     private Map<Integer, Ingredient> ingredients = new HashMap<>();
     private ArrayList<String> instruction;
 
