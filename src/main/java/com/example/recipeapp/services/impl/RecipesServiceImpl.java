@@ -9,8 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,11 +17,10 @@ import java.util.Map;
 @Data
 public class RecipesServiceImpl implements RecipesService {
     private Map<Integer, Recipe> recipeMap = new HashMap<>();
-    final private FileServiceImpl recipeFile = new FileServiceImpl();
-    final private FileServiceImpl ingredientFile = new FileServiceImpl();
+    private Integer aaa = 10;
+    final private FileServiceImpl fileService = new FileServiceImpl();
 
-    @PostConstruct
-    public void postConstruct(){
+    public RecipesServiceImpl(){
         readFromRecipeFile();
     }
 
@@ -78,27 +75,21 @@ public class RecipesServiceImpl implements RecipesService {
     private void saveToRecipeFile(){
         try {
             String data =new ObjectMapper().writeValueAsString(recipeMap);
-            recipeFile.saveToRecipeFile(data);
+            fileService.saveToRecipeFile(data);
         } catch (JsonProcessingException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
 
-    private void readFromRecipeFile(){
+    public void readFromRecipeFile(){
         try {
-            String data = recipeFile.readFromRecipeFile();
-            recipeMap = new ObjectMapper().readValue(data, new TypeReference<Map<Integer, Recipe>>() {
+            String data = fileService.readFromRecipeFile();
+            recipeMap = new ObjectMapper().readValue(data, new TypeReference<HashMap<Integer, Recipe>>() {
             });
         } catch (JsonProcessingException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
-    }
-
-    private void saveToIngredientFile(Ingredient ingredient){
-
-    }
-
-    private void readFromIngredientFile(){
-
     }
 }

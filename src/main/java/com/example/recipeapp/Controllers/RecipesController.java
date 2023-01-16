@@ -35,7 +35,7 @@ public class RecipesController {
         return allRecipes;
     }
 
-    @PostMapping("")
+    @PostMapping()
     @Operation(summary = "Добавление нового рецепта")
     public ResponseEntity<Recipe> addRecipe(@RequestBody Recipe newRecipe){
         if(newRecipe == null){
