@@ -1,7 +1,10 @@
 package com.example.recipeapp.Controllers;
 
+import com.example.recipeapp.services.FileService;
+import com.example.recipeapp.services.RecipesService;
 import com.example.recipeapp.services.impl.FileServiceImpl;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,7 +20,10 @@ import static com.example.recipeapp.Controllers.RecipesController.*;
 @RestController
 @RequestMapping("/files")
 public class FilesController {
-    private final FileServiceImpl fileService = new FileServiceImpl();
+    @Autowired
+    private FileService fileService;
+    @Autowired
+    private RecipesService recipesService;
 
     @GetMapping("/export")
     public ResponseEntity<InputStreamResource> downloadFile() throws FileNotFoundException {
