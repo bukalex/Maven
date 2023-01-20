@@ -11,13 +11,15 @@ import java.nio.file.Path;
 
 @Service
 public class FileServiceImpl implements FileService {
-    @Value("${path.to.recipe.file}")
+    /*@Value("${path.to.recipe.file}")
     private String recipeFilePath;
     @Value("${name.of.recipe.file}")
-    private String recipeFileName;
+    private String recipeFileName;*/
 
-    //private String recipeFilePath = "src/main/resources";
-    //private String recipeFileName = "recipe.json";
+    private String recipeFilePath = "src/main/resources";
+    private String recipeFileName = "recipe.json";
+    private String recipeTXTFilePath = "src/main/resources";
+    private String recipeTXTFileName = "allRecipes.txt";
 
     @Override
     public boolean saveToRecipeFile(String data){
@@ -57,5 +59,18 @@ public class FileServiceImpl implements FileService {
     @Override
     public File getRecipeFile(){
         return new File(recipeFilePath +"/"+ recipeFileName);
+    }
+
+    public File getTXTFile(String data){
+        try {
+            Path path = Path.of(recipeTXTFilePath, recipeTXTFileName);
+            Files.deleteIfExists(path);
+            Files.createFile(path);
+            Files.writeString(path, data);
+            return new File(recipeTXTFilePath +"/"+ recipeTXTFileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
