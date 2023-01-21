@@ -2,25 +2,28 @@ package com.example.recipeapp.services.impl;
 
 import com.example.recipeapp.model.Ingredient;
 import com.example.recipeapp.model.Recipe;
+import com.example.recipeapp.services.FileService;
 import com.example.recipeapp.services.RecipesService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
-@Data
 public class RecipesServiceImpl implements RecipesService {
     private Map<Integer, Recipe> recipeMap = new HashMap<>();
-    private Integer aaa = 10;
-    final private FileServiceImpl fileService = new FileServiceImpl();
+    @Autowired
+    private FileService fileService;
 
-    public RecipesServiceImpl(){
+    @PostConstruct
+    public void init(){
         readFromRecipeFile();
     }
 
@@ -39,6 +42,11 @@ public class RecipesServiceImpl implements RecipesService {
     @Override
     public Recipe getRecipe(int id) {
         return recipeMap.get(id);
+    }
+
+    @Override
+    public List<Recipe> getAllRecipes() {
+        return (List<Recipe>) recipeMap.values();
     }
 
     @Override
@@ -82,6 +90,7 @@ public class RecipesServiceImpl implements RecipesService {
         }
     }
 
+    @Override
     public void readFromRecipeFile(){
         try {
             String data = fileService.readFromRecipeFile();
@@ -91,5 +100,10 @@ public class RecipesServiceImpl implements RecipesService {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Map<Integer, Recipe> getRecipeMap() {
+        return recipeMap;
     }
 }

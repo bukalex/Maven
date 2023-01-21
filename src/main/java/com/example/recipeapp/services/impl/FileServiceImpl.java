@@ -11,15 +11,14 @@ import java.nio.file.Path;
 
 @Service
 public class FileServiceImpl implements FileService {
-    /*@Value("${path.to.recipe.file}")
+    @Value("${path.to.recipe.file}")
     private String recipeFilePath;
     @Value("${name.of.recipe.file}")
-    private String recipeFileName;*/
-
-    private String recipeFilePath = "src/main/resources";
-    private String recipeFileName = "recipe.json";
-    private String recipeTXTFilePath = "src/main/resources";
-    private String recipeTXTFileName = "allRecipes.txt";
+    private String recipeFileName;
+    @Value("${path.to.TXT.recipe.file}")
+    private String recipeTXTFilePath;
+    @Value("${name.of.TXT.recipe.file}")
+    private String recipeTXTFileName;
 
     @Override
     public boolean saveToRecipeFile(String data){
