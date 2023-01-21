@@ -1,19 +1,21 @@
 package com.example.recipeapp.Controllers;
 
 import com.example.recipeapp.model.Recipe;
-import com.example.recipeapp.services.impl.RecipesServiceImpl;
+import com.example.recipeapp.services.RecipesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/recipes")
 @Tag(name = "Рецепты", description = "CRUD-операции для работы с рецептами")
 public class RecipesController {
-    public static RecipesServiceImpl recipesService = new RecipesServiceImpl();
+    @Autowired
+    private RecipesService recipesService;
 
     @GetMapping("/{id}")
     @Operation(summary = "Поиск рецепта по идентификатору")
@@ -26,13 +28,8 @@ public class RecipesController {
 
     @GetMapping()
     @Operation(summary = "Поиск всех рецептов")
-    public String getAllRecipes(){
-        String allRecipes = new String();
-        for(Map.Entry<Integer, Recipe> recipe : recipesService.getRecipeMap().entrySet()){
-            allRecipes += recipe.getKey() + "\n";
-            allRecipes += recipe.getValue().toString() + "\n" + "\n";
-        }
-        return allRecipes;
+    public ResponseEntity<List<Recipe>> getAllRecipes(){
+        return ResponseEntity.ok().body(recipesService.getAllRecipes());
     }
 
     @PostMapping()

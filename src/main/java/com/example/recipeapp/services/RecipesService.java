@@ -3,11 +3,16 @@ package com.example.recipeapp.services;
 import com.example.recipeapp.model.Ingredient;
 import com.example.recipeapp.model.Recipe;
 
+import java.util.List;
+import java.util.Map;
+
 public interface RecipesService {
     void editRecipe(int id, Recipe recipe);
 
     void addRecipe(Recipe recipe);
     Recipe getRecipe(int id);
+
+    List<Recipe> getAllRecipes();
 
     void deleteRecipe(int id);
 
@@ -18,4 +23,9 @@ public interface RecipesService {
     void editIngredient(int recipeID, int id, Ingredient ingredient);
 
     void deleteIngredient(int recipeID, int id);
+
+    void readFromRecipeFile();
+
+
+    Map<Integer, Recipe> getRecipeMap();
 }

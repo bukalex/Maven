@@ -15,9 +15,10 @@ public class FileServiceImpl implements FileService {
     private String recipeFilePath;
     @Value("${name.of.recipe.file}")
     private String recipeFileName;
-
-    //private String recipeFilePath = "src/main/resources";
-    //private String recipeFileName = "recipe.json";
+    @Value("${path.to.TXT.recipe.file}")
+    private String recipeTXTFilePath;
+    @Value("${name.of.TXT.recipe.file}")
+    private String recipeTXTFileName;
 
     @Override
     public boolean saveToRecipeFile(String data){
@@ -57,5 +58,18 @@ public class FileServiceImpl implements FileService {
     @Override
     public File getRecipeFile(){
         return new File(recipeFilePath +"/"+ recipeFileName);
+    }
+
+    public File getTXTFile(String data){
+        try {
+            Path path = Path.of(recipeTXTFilePath, recipeTXTFileName);
+            Files.deleteIfExists(path);
+            Files.createFile(path);
+            Files.writeString(path, data);
+            return new File(recipeTXTFilePath +"/"+ recipeTXTFileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

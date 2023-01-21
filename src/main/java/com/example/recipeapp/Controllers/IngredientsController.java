@@ -1,19 +1,22 @@
 package com.example.recipeapp.Controllers;
 
 import com.example.recipeapp.model.Ingredient;
+import com.example.recipeapp.services.RecipesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-import static com.example.recipeapp.Controllers.RecipesController.recipesService;
-
 @RestController
 @RequestMapping("/recipes/{recipeID}/ingredients")
 @Tag(name = "Ингредиенты", description = "CRUD-операции для работы с ингредиентами")
 public class IngredientsController {
+    @Autowired
+    private RecipesService recipesService;
+
     @GetMapping("/{id}")
     @Operation(summary = "Поиск ингредиента по идентификатору")
     public String getIngredient(@PathVariable int recipeID, @PathVariable int id){
